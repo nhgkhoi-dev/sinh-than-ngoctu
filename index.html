@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  WEB SINH NHẬT "VŨ TRỤ"  –  cách dùng trong VS Code          ║
+  ╚══════════════════════════════════════════════════════════════╝
+  1) Tạo 1 thư mục, ví dụ "sinh-nhat", cấu trúc như sau:
+
+       sinh-nhat/
+       ├─ index.html        ← file này
+       ├─ anh/              ← bỏ ẢNH vào đây (anh-chinh.jpg, anh1.jpg...)
+       └─ nhac/             ← bỏ file NHẠC .mp3 vào đây
+
+  2) Mở thư mục bằng VS Code → cài extension "Live Server"
+     → chuột phải index.html → "Open with Live Server".
+     (Hoặc double-click index.html cũng chạy được.)
+
+  3) Mọi thứ cần cá nhân hóa nằm trong khối "CẤU HÌNH" ở phần <script>
+     bên dưới, tìm các dấu ★ (★ 1 đến ★ 5). Màu sắc chỉnh ở :root trong CSS.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05030d">
+<title>Chúc mừng sinh nhật 🎂</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>">
+<!-- Font chữ (cần internet; nếu không có mạng sẽ tự dùng font mặc định) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&family=Playfair+Display:ital,wght@1,700&display=swap">
+<style>
+/* ★ ĐỔI MÀU Ở ĐÂY: chữ, chữ phụ, màu nhấn (nút), màu phát sáng, màu vàng nến */
+:root{--ink:#f3ecff;--soft:#b9a9d9;--accent:#ff7aa2;--glow:#7a5cff;--gold:#ffd36e}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+/* Nền đen + hai vầng sáng tím/hồng rất nhẹ như tinh vân */
+body{margin:0;min-height:100vh;color:var(--ink);text-align:center;font:400 1.05rem/1.7 "Be Vietnam Pro",system-ui,sans-serif;
+  background:radial-gradient(60% 45% at 18% 8%,rgba(122,92,255,.2),transparent),radial-gradient(55% 45% at 88% 85%,rgba(255,122,162,.15),transparent),#05030d;background-attachment:fixed}
+#space{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+main{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:0 22px}
+.stage{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;animation:fin 1.2s ease both}
+@keyframes fin{from{opacity:0}}
+h1{font:italic 700 clamp(2.1rem,9vw,3.6rem)/1.15 "Playfair Display",Georgia,serif;margin:0;text-wrap:balance;min-height:2.4em}
+p{margin:0}
+.lead{color:var(--soft);max-width:24em}
+/* Ô nhập mật khẩu */
+input{font:inherit;width:min(78vw,300px);padding:12px 6px;text-align:center;letter-spacing:.12em;color:var(--ink);background:transparent;border:0;border-bottom:2px solid var(--glow);outline:0}
+input:focus{border-color:var(--accent);box-shadow:0 14px 24px -18px var(--accent)}
+form{display:flex;flex-direction:column;align-items:center;gap:16px}
+.err{min-height:1.7em;color:var(--accent);font-size:.95rem}
+.hintx{color:var(--soft);font-size:.9rem;opacity:.8;max-width:24em}
+.shake{animation:sh .4s}
+@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.btn{font:inherit;font-weight:600;padding:13px 30px;border:0;border-radius:999px;background:var(--accent);color:#2a0a1c;cursor:pointer;box-shadow:0 0 28px rgba(255,122,162,.45)}
+.btn:disabled{opacity:.6;cursor:default}
+.btn:focus-visible,.mu:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+/* Nút bật/tắt nhạc góc phải */
+.mu{position:fixed;z-index:9;top:max(12px,env(safe-area-inset-top));right:14px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:1.2rem;cursor:pointer}
+/* Bánh kem */
+.cake{position:relative;width:210px;padding-top:70px}
+.candles{position:absolute;top:6px;left:50%;transform:translateX(-50%);display:flex;gap:24px}
+.c{width:8px;height:34px;margin-top:28px;border-radius:3px;position:relative;background:repeating-linear-gradient(#fff 0 6px,var(--gold) 6px 12px)}
+.f{position:absolute;left:50%;top:-22px;width:12px;height:19px;margin-left:-6px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(#fff6c8 20%,var(--gold) 60%,#ff7a2f);transform-origin:50% 100%;animation:fl .35s infinite alternate;box-shadow:0 0 18px 4px rgba(255,211,110,.5)}
+@keyframes fl{to{transform:scale(1.1,.9) rotate(4deg)}}
+.out .f{animation:none;opacity:0;transform:scale(.2);transition:all .5s}
+.tier{position:relative;margin:0 auto;border-radius:14px 14px 6px 6px}
+.tier::before{content:"";position:absolute;inset:0 0 auto;height:15px;background:#fff;border-radius:14px 14px 50% 50%/14px 14px 100% 100%}
+.t1{width:130px;height:58px;background:linear-gradient(#ff7aa2,#d62f5e)}
+.t2{width:210px;height:74px;background:linear-gradient(#ffb3c8,#f07a9f)}
+.plate{width:240px;height:12px;margin:-3px -15px 0;border-radius:50%;background:#fff;opacity:.25}
+/* Phần lời chúc */
+#reveal{padding:56px 0 90px;display:flex;flex-direction:column;align-items:center;gap:26px}
+.frame{width:min(62vw,250px);aspect-ratio:1;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:4rem;background:rgba(255,255,255,.06);box-shadow:0 0 0 3px rgba(255,255,255,.18),0 0 70px 6px var(--glow)}
+.frame img{width:100%;height:100%;object-fit:cover}
+.letter{display:grid;gap:14px;max-width:30em;text-wrap:pretty}
+.days{color:var(--soft);font-size:.98rem;max-width:26em}
+#galWrap{width:100%;display:grid;gap:12px}
+#galWrap:has(.gal:empty){display:none}
+.gal{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 22px 14px;margin:0 -22px;width:calc(100% + 44px)}
+.gal figure{flex:0 0 min(76vw,290px);margin:0;scroll-snap-align:center}
+.gal img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:16px;box-shadow:0 0 30px rgba(122,92,255,.35)}
+.gal figcaption{color:var(--soft);font-size:.9rem;margin-top:8px}
+#reasons{width:100%;display:grid;gap:10px;justify-items:center}
+.r{width:100%;max-width:30em;text-align:left;padding:12px 18px;background:rgba(255,255,255,.07);border-left:3px solid var(--accent);border-radius:0 14px 14px 0;animation:pop .4s ease-out}
+@keyframes pop{from{opacity:0;transform:scale(.96)}}
+.sign{font:italic 700 1.6rem/1.3 "Playfair Display",Georgia,serif}
+#cf{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="space" aria-hidden="true"></canvas>
+<canvas id="cf" aria-hidden="true"></canvas>
+<button class="mu" id="mu" aria-label="Bật hoặc tắt nhạc" hidden>🔊</button>
+<audio id="bgm" loop preload="auto"></audio>
+
+<main>
+  <!-- MÀN 1: cổng mật khẩu (chữ hiển thị lấy từ CẤU HÌNH bên dưới) -->
+  <section id="gate" class="stage">
+    <h1 id="gTitle"></h1>
+    <p class="lead" id="gSub"></p>
+    <form id="pw" autocomplete="off">
+      <input id="key" type="password" aria-label="Mật khẩu" autocomplete="off">
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn" type="submit" id="go"></button>
+      <p class="hintx" id="hintx"></p>
+    </form>
+  </section>
+
+  <!-- MÀN 2: bánh kem, thổi nến -->
+  <section id="cakeS" class="stage" hidden>
+    <div class="cake" id="cake" aria-hidden="true">
+      <div class="candles"><div class="c"><i class="f"></i></div><div class="c"><i class="f"></i></div><div class="c"><i class="f"></i></div></div>
+      <div class="tier t1"></div><div class="tier t2"></div><div class="plate"></div>
+    </div>
+    <p class="lead" id="wish"></p>
+    <button class="btn" id="blow"></button>
+  </section>
+
+  <!-- MÀN 3: ảnh + lời chúc -->
+  <section id="reveal" hidden>
+    <div class="frame" id="hero" aria-hidden="true">💗</div>
+    <h1 id="hb" aria-live="polite"></h1>
+    <div class="letter" id="letter"></div>
+    <p class="days" id="days" hidden></p>
+    <div id="galWrap"><p class="lead" id="galT"></p><div class="gal" id="gal"></div></div>
+    <div id="reasons"></div>
+    <button class="btn" id="more"></button>
+    <p class="sign" id="end" hidden></p>
+  </section>
+</main>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CẤU HÌNH – CHỈ CẦN SỬA KHỐI NÀY LÀ XONG
+   ══════════════════════════════════════════════════════════════ */
+const C = {
+
+  /* ★ 1. MẬT KHẨU ─────────────────────────────────────────────
+     - Có thể đặt nhiều mật khẩu, cách nhau bằng dấu phẩy.
+     - Không phân biệt hoa/thường, dấu tiếng Việt, khoảng trắng và dấu / . -
+       (VD đặt "14/02/2024" thì gõ "14022024" cũng vào được; đặt "yêu anh" thì gõ "YEUANH" vẫn đúng).
+     - Lưu ý: mật khẩu nằm ngay trong code nên ai bấm "xem mã nguồn" đều thấy.
+       Đây là cổng "cho vui", không phải bảo mật thật. */
+  passwords: ["161110", "yeuem"],
+  gateTitle: "Vũ trụ này chỉ dành cho một người",   // dòng chữ lớn ở cổng
+  gateSub:   "Nhập mật khẩu để đi vào.",             // dòng nhỏ bên dưới
+  hint:      "Gợi ý: tôi nhắc pass này 1 lần rùi, viết liền (ngày/tháng/ngày).", // gợi ý cho cô ấy
+  wrong:     "Chưa đúng rồi, thử lại nhé em.",       // báo khi gõ sai
+  goBtn:     "Đi vào",                               // chữ trên nút
+
+  /* ★ 2. THÔNG TIN CHUNG ───────────────────────────────────── */
+  name:  "em na",        // tên/biệt danh của cô ấy (hiện trong lời chúc)
+  from:  "qkhoi-dev",           // tên bạn, hiện ở cuối trang
+  since: "2026-08-04",    // ngày yêu nhau, định dạng NĂM-THÁNG-NGÀY ("" nếu không muốn hiện số ngày)
+
+  /* ★ 3. ẢNH ──────────────────────────────────────────────────
+     - Bỏ ảnh vào thư mục "anh" rồi ghi đúng tên file (nhớ cả đuôi .jpg / .png).
+     - heroPhoto: ảnh tròn lớn ở đầu lời chúc (nên dùng ảnh vuông, mặt ở giữa).
+     - photos: thư viện ảnh vuốt ngang. Thêm/bớt dòng thoải mái.
+       "cap" là dòng chú thích dưới ảnh (để "" nếu không cần).
+     - Chưa có ảnh nào thì trang vẫn chạy bình thường. */
+  heroPhoto: "anh/anh-chinh.jpg",
+  galleryTitle: "Những tấm ảnh yêu thích của lqk ",
+  photos: [
+    { src: "anh/anh1.jpg", cap: "em na" },
+    { src: "anh/anh2.jpg", cap: "ngoc tu" },
+    { src: "anh/anh3.jpg", cap: "emily" }
+    // { src: "anh/anh4.jpg", cap: "Thêm ảnh: copy một dòng như thế này" },
+  ],
+
+  /* ★ 4. NHẠC ─────────────────────────────────────────────────
+     - Bỏ file .mp3 vào thư mục "nhac" rồi ghi đúng tên file ở "src".
+     - Nhạc tự phát sau khi cô ấy nhập đúng mật khẩu (trình duyệt cho phép vì đã có thao tác bấm).
+     - volume: âm lượng từ 0 đến 1.
+     - Để src là "" nếu không muốn dùng nhạc. */
+  music: { src: "nhac/nhac-nen.mp3", volume: 0.4},
+
+  /* ★ 5. LỜI CHÚC ─────────────────────────────────────────────
+     Mỗi dòng trong ngoặc [ ] là một đoạn, nhớ có dấu phẩy cuối mỗi dòng (trừ dòng cuối). */
+  wishText: "Nhắm mắt lại, ước một điều thật đẹp, và thôi nến nhé.",  // chữ ở màn bánh kem
+  blowBtn:  "phù thủy lqk thực hiện điều ước",
+  letter: [
+    "Hôm nay là ngày sinh thần của em, nên anh chỉ muốn nói thật ngắn gọn thôi.",
+    "Cảm ơn em vì đã đến, vì đã ở lại, và vì đã khiến những ngày bình thường của anh trở nên đáng nhớ.",
+    "Chúc em tuổi mới hạnh phúc cười nhiều hơn , ít muộn phiền, và luôn được làm điều em thích ạ.",
+    "Dù em đi đâu, anh vẫn là người ở bên cạnh em ."
+  ],
+  daysText: "Chúng mình đã bên nhau 105 ngày, và anh muốn đếm tiếp thật nhiều ngày nữa.", // {n} = số ngày
+  reasonsBtn: "Vì sao anh yêu em?",   // nút bấm để hiện từng lý do
+  reasonsMore: "Còn nữa đó…",
+  reasons: [
+    "Vì có những lúc em chẳng nói gì, nhưng chỉ cần có em ở đó là anh đã thấy bình yên.",
+    "Vì sau tất cả những mệt mỏi ngoài kia, anh vẫn luôn mong được trở về và kể em nghe mọi chuyện.",
+    "Vì anh muốn là người nhìn thấy em trưởng thành, thực hiện ước mơ và hạnh phúc qua từng năm tháng.",
+    "Em giống như một khoảng trời riêng mà anh chẳng muốn tìm thấy điểm kết thúc.",
+    "Vì em là em."
+  ],
+  ending: "Yêu em rất nhiều. 💗"   // dòng cuối cùng (tên người gửi tự thêm phía sau)
+};
+/* ═══════════════ HẾT PHẦN CẤU HÌNH – bên dưới là code chạy, không cần sửa ═══════════════ */
+
+const $ = s => document.querySelector(s);
+const calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+const show = id => document.querySelectorAll("main>section").forEach(s => s.hidden = s.id !== id);
+
+/* --- Đổ chữ từ cấu hình vào trang --- */
+$("#gTitle").textContent = C.gateTitle;  $("#gSub").textContent = C.gateSub;
+$("#hintx").textContent = C.hint;        $("#go").textContent = C.goBtn;
+$("#wish").textContent = C.wishText;     $("#blow").textContent = C.blowBtn;
+$("#galT").textContent = C.galleryTitle; $("#more").textContent = C.reasonsBtn;
+C.letter.forEach(t => { const p = document.createElement("p"); p.textContent = t; $("#letter").append(p) });
+$("#end").textContent = C.ending + " — " + C.from;
+if (C.since) {
+  const n = Math.floor((Date.now() - new Date(C.since)) / 864e5);
+  if (n > 0) { const d = $("#days"); d.hidden = false; d.textContent = C.daysText.replace("{n}", n.toLocaleString("vi-VN")) }
+}
+
+/* --- Ảnh: ảnh nào không tìm thấy sẽ tự ẩn, không hiện icon lỗi --- */
+if (C.heroPhoto) { const i = new Image(); i.alt = "Ảnh của " + C.name; i.onload = () => $("#hero").replaceChildren(i); i.src = C.heroPhoto }
+C.photos.forEach(p => {
+  const f = document.createElement("figure"), i = new Image();
+  i.alt = p.cap || ""; i.onerror = () => f.remove(); i.src = p.src; f.append(i);
+  if (p.cap) { const c = document.createElement("figcaption"); c.textContent = p.cap; f.append(c) }
+  $("#gal").append(f);
+});
+
+/* --- Nhạc --- */
+const bgm = $("#bgm"), mu = $("#mu"); let musicOk = !!C.music.src;
+if (musicOk) { bgm.src = C.music.src; bgm.volume = C.music.volume ?? .6; bgm.onerror = () => musicOk = false }
+function startMusic() {
+  if (!musicOk) return;
+  mu.hidden = false;
+  bgm.play().then(() => mu.textContent = "🔊").catch(() => mu.textContent = "🔇");
+}
+mu.onclick = () => { if (bgm.paused) { bgm.play(); mu.textContent = "🔊" } else { bgm.pause(); mu.textContent = "🔇" } };
+
+/* --- Bầu trời sao: các chấm sáng nhấp nháy, trôi chậm; khi vào cổng thì "phóng" tốc độ ánh sáng --- */
+const cv = $("#space"), g = cv.getContext("2d");
+let W, H, S = [], speed = .45, warp = false;
+const mk = z => ({ x: (Math.random() - .5) * 2 * W, y: (Math.random() - .5) * 2 * H, z: z ?? Math.random() * W, t: Math.random() * 6 });
+function fit() { W = cv.width = innerWidth; H = cv.height = innerHeight; S = Array.from({ length: Math.min(520, W * H / 3500 | 0) }, () => mk()) }
+addEventListener("resize", fit); fit();
+function frame(t) {
+  speed += ((warp ? 46 : calm ? .1 : .45) - speed) * .07;
+  g.clearRect(0, 0, W, H); g.lineCap = "round"; g.strokeStyle = "#fff";
+  for (const s of S) {
+    const pz = s.z + speed * (warp ? 1.6 : .4); s.z -= speed;
+    const k = W * .5 / s.z, x = s.x * k + W / 2, y = s.y * k + H / 2;
+    if (s.z <= 1 || x < -50 || x > W + 50 || y < -50 || y > H + 50) { Object.assign(s, mk(W)); continue }
+    const q = W * .5 / pz;
+    g.globalAlpha = warp ? .9 : .35 + .65 * Math.abs(Math.sin(t / 900 + s.t));
+    g.lineWidth = (1 - s.z / W) * 2.2 + .5;
+    g.beginPath(); g.moveTo(s.x * q + W / 2, s.y * q + H / 2); g.lineTo(x, y); g.stroke();
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* --- Kiểm tra mật khẩu (bỏ dấu, bỏ ký tự đặc biệt, không phân biệt hoa/thường) --- */
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/[^a-z0-9]/g, "");
+$("#pw").onsubmit = e => {
+  e.preventDefault();
+  const v = norm($("#key").value);
+  if (v && C.passwords.some(p => norm(p) === v)) return enter();
+  $("#err").textContent = C.wrong;
+  const f = $("#pw"); f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake");
+  $("#key").select();
+};
+function enter() {
+  startMusic();
+  const gt = $("#gate"); gt.style.pointerEvents = "none"; gt.style.transition = "opacity .6s"; gt.style.opacity = 0;
+  warp = !calm;
+  setTimeout(() => { warp = false; show("cakeS") }, calm ? 0 : 1700);
+}
+
+/* --- Thổi nến → pháo giấy → lời chúc --- */
+$("#blow").onclick = function () {
+  this.disabled = true; $("#cake").classList.add("out");
+  setTimeout(() => { show("reveal"); scrollTo(0, 0); boom(); type() }, calm ? 0 : 900);
+};
+function type() {
+  const t = "Chúc mừng sinh nhật, " + C.name + "!", el = $("#hb"); let i = 0;
+  if (calm) { el.textContent = t; return }
+  const id = setInterval(() => { el.textContent = t.slice(0, ++i); if (i >= t.length) clearInterval(id) }, 60);
+}
+let k = 0;
+$("#more").onclick = function () {
+  if (k < C.reasons.length) {
+    const d = document.createElement("div"); d.className = "r"; d.textContent = C.reasons[k++];
+    $("#reasons").append(d); d.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "center" });
+  }
+  if (k >= C.reasons.length) { this.hidden = true; $("#end").hidden = false } else this.textContent = C.reasonsMore;
+};
+function boom() {
+  if (calm) return;
+  const cf = $("#cf"), x = cf.getContext("2d"), col = ["#ff7aa2", "#ffd36e", "#ffffff", "#b388ff", "#7fe0c8"];
+  cf.width = innerWidth; cf.height = innerHeight;
+  let P = Array.from({ length: 150 }, () => ({ x: innerWidth / 2, y: innerHeight * .55, vx: (Math.random() - .5) * 15, vy: -Math.random() * 17 - 4, s: Math.random() * 7 + 4, c: col[Math.random() * 5 | 0], r: Math.random() * 6, a: 1 }));
+  (function f() {
+    x.clearRect(0, 0, cf.width, cf.height);
+    P.forEach(p => { p.vy += .35; p.x += p.vx; p.y += p.vy; p.r += .2; p.a -= .006; x.globalAlpha = Math.max(p.a, 0); x.fillStyle = p.c; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * .6); x.restore() });
+    P = P.filter(p => p.a > 0 && p.y < innerHeight + 20);
+    P.length ? requestAnimationFrame(f) : x.clearRect(0, 0, cf.width, cf.height);
+  })();
+}
+</script>
+</body>
+</html>
